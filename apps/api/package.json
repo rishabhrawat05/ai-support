@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "build": "bun build src/index.ts --outdir dist",
+    "build": "bun build src/index.ts --outdir dist --target=bun",
     "start": "bun run dist/index.js",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
@@ -15,6 +15,7 @@
     "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.0.0",
     "@prisma/adapter-pg": "6",
     "@prisma/client": "6",
     "@repo/rpc": "*",
