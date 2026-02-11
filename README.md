@@ -1,135 +1,203 @@
-# Turborepo starter
+# AI Support
 
-This Turborepo starter is maintained by the Turborepo core team.
+A full-stack AI-powered customer support application built with modern technologies. This monorepo project provides an intelligent chat interface with multiple specialized AI agents for handling support, orders, and billing inquiries.
 
-## Using this example
+## Overview
 
-Run the following command:
+AI Support is a comprehensive customer service platform that leverages artificial intelligence to provide automated assistance. The application features real-time streaming responses, conversation history management, and specialized AI agents for different support categories.
 
-```sh
-npx create-turbo@latest
+## Architecture
+
+This project is structured as a Turborepo monorepo with the following components:
+
+### Applications
+
+- **api** - Backend API server built with Hono, providing RPC endpoints for chat, agents, and health checks
+- **web** - Next.js frontend application with the main chat interface
+- **docs** - Next.js documentation site
+
+### Shared Packages
+
+- **@repo/rpc** - Type-safe RPC client for frontend-backend communication
+- **@repo/ui** - Shared React component library
+- **@repo/eslint-config** - Shared ESLint configuration
+- **@repo/typescript-config** - Shared TypeScript configuration
+
+## Technology Stack
+
+### Backend
+- **Runtime:** Bun
+- **Framework:** Hono
+- **Database:** PostgreSQL with Prisma ORM
+- **AI Integration:** Vercel AI SDK
+- **Language:** TypeScript
+
+### Frontend
+- **Framework:** Next.js 16 with App Router
+- **UI:** React 19 with CSS Modules
+- **Type Safety:** TypeScript with Hono RPC Client
+- **Language:** TypeScript
+
+### Development Tools
+- **Package Manager:** Bun 1.3.9
+- **Build System:** Turborepo
+- **Code Quality:** ESLint, Prettier
+- **Database Tools:** Prisma
+
+## Database Schema
+
+The application uses PostgreSQL with the following main entities:
+
+- **Conversation** - Stores chat conversations
+- **Message** - Individual messages within conversations (supports multiple agents)
+- **Order** - Customer orders with status tracking (PENDING, CONFIRMED, SHIPPED, CANCELLED)
+- **Payment** - Payment transactions with status tracking (INITIATED, SUCCESS, FAILED)
+
+## Prerequisites
+
+- Node.js 18 or higher
+- Bun 1.3.9
+- PostgreSQL database
+
+## Getting Started
+
+### Installation
+
+Clone the repository and install dependencies:
+
+```bash
+bun install
 ```
 
-## What's inside?
+### Environment Configuration
 
-This Turborepo includes the following packages/apps:
+Create a `.env` file in the root directory with the following variables:
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/ai-support"
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+For the web application, create `apps/web/.env.local`:
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
-### Develop
+### Database Setup
 
-To develop all apps and packages, run the following command:
+Run Prisma migrations to set up the database:
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+cd apps/api
+bun run prisma migrate dev
+bun run db:seed
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### Development
 
+Start all applications in development mode:
+
+```bash
+bun dev
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
+
+This will start:
+- API server on http://localhost:3001
+- Web application on http://localhost:3000
+- Documentation site on http://localhost:3003
+
+To run a specific application:
+
+```bash
+# API only
+turbo dev --filter=@repo/api
+
+# Web only
 turbo dev --filter=web
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# Docs only
+turbo dev --filter=docs
 ```
 
-### Remote Caching
+### Building
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Build all applications:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```bash
+bun run build
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Build a specific application:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+turbo build --filter=web
 ```
 
-## Useful Links
+## Available Scripts
 
-Learn more about the power of Turborepo:
+- `bun dev` - Start all applications in development mode
+- `bun build` - Build all applications
+- `bun lint` - Run ESLint across all packages
+- `bun format` - Format code with Prettier
+- `bun check-types` - Type check all packages
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+## API Endpoints
+
+The backend API provides the following routes:
+
+- `GET /health` - Health check endpoint
+- `POST /agents` - Manage AI agents
+- `POST /chat` - Handle chat messages with streaming support
+
+## Features
+
+### AI Agent System
+Multiple specialized agents handle different types of inquiries:
+- Support Agent - General customer support questions
+- Order Agent - Order tracking and management
+- Billing Agent - Payment and billing inquiries
+
+### Real-time Chat
+- Streaming AI responses for natural conversation flow
+- Conversation history persistence
+- Multi-agent support within single conversations
+
+### Database Management
+- Prisma ORM for type-safe database operations
+- PostgreSQL for reliable data storage
+- Automated migrations
+
+### Type Safety
+- End-to-end type safety with TypeScript
+- RPC client for type-safe API calls
+- Shared types across frontend and backend
+
+## Project Structure
+
+```
+ai-support/
+├── apps/
+│   ├── api/          # Backend API server
+│   ├── docs/         # Documentation site
+│   └── web/          # Frontend application
+├── packages/
+│   ├── eslint-config/      # Shared ESLint config
+│   ├── rpc/               # RPC client package
+│   ├── typescript-config/ # Shared TypeScript config
+│   └── ui/               # Shared UI components
+├── package.json
+├── turbo.json
+└── bun.lock
+```
+
+## Development Workflow
+
+1. Make your changes in the appropriate package or application
+2. Run type checking: `bun check-types`
+3. Run linting: `bun lint`
+4. Format code: `bun format`
+5. Test your changes locally with `bun dev`
+
+## License
+
+Private repository - All rights reserved
