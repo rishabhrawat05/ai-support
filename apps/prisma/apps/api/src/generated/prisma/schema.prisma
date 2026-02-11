@@ -1,0 +1,29 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./apps/api/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  messages  Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  role           String
+  content        String
+  agent          String?
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@map("messages")
+}

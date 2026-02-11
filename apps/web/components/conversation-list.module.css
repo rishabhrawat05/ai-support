@@ -1,0 +1,133 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+}
+
+.header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.newButton {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  transition: all 0.2s;
+}
+
+.newButton:hover {
+  background: var(--hover-bg);
+  transform: scale(1.05);
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: 1px solid transparent;
+}
+
+.item:hover {
+  background: var(--hover-bg);
+}
+
+.item.active {
+  background: var(--active-bg);
+  border-color: var(--border-color);
+}
+
+.itemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemPreview {
+  font-size: 14px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+
+.itemDate {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.deleteButton {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.item:hover .deleteButton {
+  opacity: 1;
+}
+
+.deleteButton:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+:root {
+  --sidebar-bg: #fafafa;
+  --border-color: #e0e0e0;
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --active-bg: rgba(0, 122, 255, 0.1);
+  --text-secondary: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sidebar-bg: #1a1a1a;
+    --border-color: #333;
+    --hover-bg: rgba(255, 255, 255, 0.05);
+    --active-bg: rgba(90, 200, 250, 0.15);
+    --text-secondary: #999;
+  }
+}

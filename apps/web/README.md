@@ -1,24 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# AI Support Frontend
+
+This is the web frontend for the AI Support chat application.
+
+## Features
+
+- 🤖 AI-powered chat with multiple specialized agents (Support, Order, Billing)
+- 💬 Real-time streaming responses
+- 📝 Conversation history management
+- 🎨 Beautiful, responsive UI with dark mode support
+- ⚡ Type-safe API client with Hono RPC
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies and configure the environment:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
+```
+
+Create a `.env.local` file with your API URL:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+Then, run the development server:
+
+```bash
 bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Important:** Make sure the backend API is running on port 3001 before starting the frontend.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+## Architecture
+
+- **Framework:** Next.js 16 with App Router
+- **Type Safety:** TypeScript with RPC client
+- **Styling:** CSS Modules with CSS Variables
+- **API Client:** Hono RPC Client (`@repo/rpc`)
+
+## Components
+
+- `ChatInterface` - Main chat UI with message input and display
+- `ConversationList` - Sidebar for managing conversations
+- `MessageBubble` - Individual message component with role-based styling
+
+## Available Scripts
+
+- `bun dev` - Start development server (port 3000)
+- `bun build` - Build for production
+- `bun start` - Start production server
+- `bun lint` - Run ESLint
+- `bun check-types` - Type check the project
 
 ## Learn More
 
@@ -27,10 +61,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

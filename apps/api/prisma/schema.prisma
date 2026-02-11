@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Conversation {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  messages  Message[]
+  orders   Order[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  role           String
+  content        String
+  agent          String?
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@map("messages")
+}
+
+model Order{
+  id String @id @default(uuid())
+  orderNumber String @unique
+  status OrderStatus
+  amount Float
+  currency String
+  conversationId String
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  payment Payment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders")
+
+}
+
+model Payment{
+  id String @id @default(cuid())
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
+  amount Float
+  status PaymentStatus
+  method String
+  createdAt DateTime @default(now())
+
+  @@map("payments")
+
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  INITIATED
+  SUCCESS
+  FAILED
+}
