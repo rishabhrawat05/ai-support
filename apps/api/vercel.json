@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx prisma generate --schema=prisma/schema.prisma && mkdir -p public",
+  "buildCommand": "npx prisma generate --schema=prisma/schema.prisma",
   "outputDirectory": "public",
   "installCommand": "npm install",
   "framework": null,
